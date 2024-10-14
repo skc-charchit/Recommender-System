@@ -7,6 +7,8 @@ Its a basic NLP project to recommend movies based on the user's review.
 - Its trained on the TMDB dataset and I took it from kaggle.
 - [Link](https://www.kaggle.com/datasets/ahsanaseer/top-rated-tmdb-movies-10k)
 
+- Images are not present because the TMBD website has some issues and I could not get the access of API Key.
+
 ## Requirements
 
 - Python
