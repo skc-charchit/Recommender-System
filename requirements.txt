@@ -3,3 +3,14 @@ numpy
 scikit-learn
 matplotlib
 seaborn
+tensorflow
+streamlit
+gradio
+langchain
+langsmith
+langchain-community
+ollama
+orjson
+transformers
+torch
+sentence-transformers
