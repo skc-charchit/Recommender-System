@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import gradio as gr
 
-from .service import recommend_movies
+from .service import movie_titles, recommend_movies
 
 
 def recommend_for_ui(movie_title: str) -> tuple[str, str]:
@@ -23,9 +23,14 @@ def recommend_for_ui(movie_title: str) -> tuple[str, str]:
 
 with gr.Blocks(title="TMDB Movie Recommender") as demo:
     gr.Markdown("# TMDB Movie Recommender")
-    with gr.Row():
-        movie_input = gr.Textbox(label="Movie title")
-        submit_btn = gr.Button("Recommend")
+    movie_input = gr.Dropdown(
+        choices=movie_titles(),
+        label="Choose a movie",
+        info="Select a title or type your own movie title.",
+        allow_custom_value=True,
+        filterable=True,
+    )
+    submit_btn = gr.Button("Recommend")
     status = gr.Textbox(label="Status")
     output = gr.Markdown()
     submit_btn.click(fn=recommend_for_ui, inputs=movie_input, outputs=[status, output])

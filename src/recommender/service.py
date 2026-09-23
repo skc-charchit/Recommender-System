@@ -13,3 +13,10 @@ def get_recommender() -> MovieRecommender:
 
 def recommend_movies(movie_title: str, top_n: int = 5) -> list[dict[str, Any]]:
     return get_recommender().recommend(movie_title, top_n=top_n)
+
+
+def movie_titles() -> list[str]:
+    recommender = get_recommender()
+    if recommender.movies_df is None:
+        return []
+    return recommender.movies_df["title"].dropna().astype(str).tolist()
