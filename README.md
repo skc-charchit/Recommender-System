@@ -1,31 +1,68 @@
-# TMDB Movie Recommender System (NLP End-to-End Project)
+# TMDB Movie Recommender System
 
-Its a basic NLP project to recommend movies based on the user's review.
+A production-ready movie recommendation service built around a TF-IDF + cosine-similarity pipeline for TMDB movie metadata. The project exposes both a FastAPI service and a Gradio UI, without using Streamlit.
 
-- Objective:- User can find their own favorite movies based on the review they give and can get 5 similar movies.
+## Overview
 
-- Its trained on the TMDB dataset and I took it from kaggle.
-- [Link](https://www.kaggle.com/datasets/ahsanaseer/top-rated-tmdb-movies-10k)
+This recommender uses movie metadata such as title, genre, original language, and overview to identify similar films. The pipeline builds a vector representation for each title and computes cosine similarity across the catalog.
 
-- Images are not present because the TMBD website has some issues and I could not get the access of API Key.
+## Project structure
 
-## Requirements
+- `src/recommender/model.py` – core recommender and model-building logic
+- `src/recommender/service.py` – shared service layer for API/UI integration
+- `src/recommender/api.py` – FastAPI application
+- `src/recommender/ui.py` – Gradio application
+- `src/recommender/train.py` – model training function
+- `api.py`, `gradio_app.py`, `train_model.py` – small compatibility launchers
+- `src/data/top10K-TMDB-movies.csv` – TMDB source dataset
+- `src/models/` – serialized movie and similarity artifacts
 
-- Python
-- Pandas
-- Numpy
-- Scikit-learn
-- NLTK
-- Seaborn
-- Streamlit
+## Setup
 
-## Steps
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-1. Import the necessary libraries
-2. Load the dataset
-3. Clean the data
-4. Preprocess the data
+## Train the model
 
-## Output
+```bash
+python train_model.py
+```
 
-- The output will be a streamlit app where the user can give a choose its movie in which he's intrested in and which is present in the list and the app will recommend 5 similar movies based on the search.
+The script creates or refreshes:
+
+- `src/models/movies.pkl`
+- `src/models/similarity.pkl`
+
+## Run the API
+
+```bash
+uvicorn api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Test endpoint:
+
+```bash
+curl http://localhost:8000/health
+```
+
+Example recommendation call:
+
+```bash
+curl -X POST "http://localhost:8000/recommend" \
+  -H "Content-Type: application/json" \
+  -d '{"movie_title":"The Shawshank Redemption","top_n":5}'
+```
+
+## Run the Gradio UI
+
+```bash
+python gradio_app.py
+```
+
+Then open the local Gradio URL shown in the terminal.
+
+No CI/CD or GitHub Actions are included.
